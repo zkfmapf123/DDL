@@ -22,6 +22,7 @@ var rootCmd = &cobra.Command{
 
 func initial() {
 
+	// Cobra onInitialize
 	cobra.OnInitialize(func() {
 
 		err := setAWSProfile()
@@ -34,6 +35,10 @@ func initial() {
 			log.Fatalln("[ERROR] init config", err)
 		}
 	})
+
+	// Bind Flags
+	rootCmd.PersistentFlags().StringP("profile", "p", "", "[Required] AWS Profile")
+	viper.BindPFlag("profile", rootCmd.PersistentFlags().Lookup("profile"))
 }
 
 func setConfig() error {
@@ -62,6 +67,5 @@ func setAWSProfile() error {
 
 func Execute() error {
 	initial()
-
 	return rootCmd.Execute()
 }

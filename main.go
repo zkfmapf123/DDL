@@ -1,6 +1,8 @@
 package main
 
-import "github.com/zkfmapf123/DDL/src/cmd"
+import (
+	"github.com/zkfmapf123/DDL/src/cmd"
+)
 
 func main() {
 	err := cmd.Execute()

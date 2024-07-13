@@ -1,16 +1,17 @@
 build: 
-    CGO_ENABLED=1 GOARCH=amd64 go build -o bin/x86/ddl
-    CGO_ENABLED=1 GOARCH=amd64 go build -o bin/arm/ddl
+	@echo "Building for x86 architecture"
+	@CGO_ENABLED=0 GOARCH=amd64 go build -o bin/x86/ddl
+	@echo "Building for ARM architecture"
+	@CGO_ENABLED=0 GOARCH=arm64 go build -o bin/arm/ddl
 
 run:
 	go run main.go
 
 which:
-	mv /bin/arm/ddl /usr/loca/bin/ddl
+	sudo mv ./bin/arm/ddl /usr/local/bin/ddl
 
-start: clean
-	make build
-	make which
+start: build
+	@make which
 	ddl
 
 test:
