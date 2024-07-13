@@ -1,9 +1,4 @@
-clean:
-    rm -rf bootstrap
-    rm -rf /bin/x86/*
-    rm -rf /bin/arm/*
-
-build: clean
+build: 
     CGO_ENABLED=1 GOARCH=amd64 go build -o bin/x86/ddl
     CGO_ENABLED=1 GOARCH=amd64 go build -o bin/arm/ddl
 
@@ -18,6 +13,5 @@ start: clean
 	make which
 	ddl
 
-
-
-
+test:
+	go test -v ./...
