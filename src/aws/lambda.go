@@ -2,15 +2,34 @@ package aws
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
+	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
+	"github.com/zkfmapf123/DDL/src/utils"
+)
+
+var (
+	ATTACH_TAGS = map[string]string{
+		"DDL":         "true",
+		"CreatedAt":   utils.GetCurrentTime(),
+		"UpdatedAt":   utils.GetCurrentTime(),
+		"UpdateCount": "0",
+	}
 )
 
 type LambdaParams struct {
-	Name string            `json:"name"`
-	Tags map[string]string `json:"tags"`
+	Name        string
+	Achitecture string
+	Tags        map[string]string
+	Runtime     string // latest
+	Mem         string
+	Storage     string
+	TimeLimit   int
+
+	// Option (TOBE)
+	// network 	struct
+	// gateway  struct
 }
 
 type LambdaOutputParams struct {
@@ -23,7 +42,7 @@ type LambdaOutputParams struct {
 	Tags         map[string]string `json:"tags"`
 }
 
-func (aw *AWSconfig) CreateLambda() {
+func (aw *AWSconfig) CreateLambda(params LambdaParams) {
 
 }
 
@@ -33,15 +52,66 @@ func retriveLambda(l lambda.Client, parmas LambdaParams) (LambdaOutputParams, er
 	})
 
 	if err != nil {
+		return LambdaOutputParams{}, err
+	}
+
+	tagRes, err := l.ListTags(context.TODO(), &lambda.ListTagsInput{
+		Resource: res.Configuration.FunctionArn,
+	})
+
+	if err != nil {
 		return LambdaOutputParams{}, nil
 	}
 
-	fmt.Println(res.Configuration.Architectures)
+	return getLambdaFunc(*res.Configuration, *tagRes), nil
+}
 
-	// res.Configuration.
+func retriveLambdas(l lambda.Client) ([]LambdaOutputParams, error) {
+
+	var marker *string
+	lambdaList := []LambdaOutputParams{}
+
+	for {
+		res, err := l.ListFunctions(context.TODO(), &lambda.ListFunctionsInput{Marker: marker})
+
+		if err != nil {
+			return []LambdaOutputParams{}, err
+		}
+
+		for _, fn := range res.Functions {
+
+			tagRes, err := l.ListTags(context.TODO(), &lambda.ListTagsInput{
+				Resource: fn.FunctionArn,
+			})
+
+			if err != nil {
+				return []LambdaOutputParams{}, err
+			}
+
+			lambdaList = append(lambdaList, getLambdaFunc(fn, *tagRes))
+		}
+
+		if res.NextMarker != nil {
+			marker = res.NextMarker
+		} else {
+			break
+		}
+	}
+
+	return lambdaList, nil
+}
+
+func getLambdaFunc(attr types.FunctionConfiguration, tags lambda.ListTagsOutput) LambdaOutputParams {
+
+	var tagMap = make(map[string]string, len(tags.Tags))
+
+	for k, v := range tags.Tags {
+		tagMap[k] = v
+	}
+
 	return LambdaOutputParams{
-		Name: *res.Configuration.FunctionName,
-		Arn:  *res.Configuration.FunctionArn,
-	}, nil
-
+		Name: *attr.FunctionName,
+		Arn:  *attr.FunctionArn,
+		Tags: tagMap,
+	}
 }
