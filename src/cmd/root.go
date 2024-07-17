@@ -1,12 +1,14 @@
 package cmd
 
 import (
+	"errors"
 	"log"
 	"path/filepath"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/zkfmapf123/DDL/src/filesystems"
+	"github.com/zkfmapf123/DDL/src/interactions"
 )
 
 var (
@@ -62,10 +64,18 @@ func setAWSProfile() error {
 		return err
 	}
 
+	// region
+	region := interactions.Prompt("Input Your Region : ")
+	if region == "" {
+		return errors.New("InValid Region")
+	}
+
+	viper.Set("region", region)
 	return nil
 }
 
 func Execute() error {
 	initial()
+
 	return rootCmd.Execute()
 }
