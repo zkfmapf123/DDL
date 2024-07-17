@@ -26,6 +26,7 @@ type LambdaParams struct {
 	Mem         string
 	Storage     string
 	TimeLimit   int
+	Policy      string
 
 	// Option (TOBE)
 	// network 	struct
@@ -43,6 +44,10 @@ type LambdaOutputParams struct {
 }
 
 func (aw *AWSconfig) CreateLambda(params LambdaParams) {
+
+}
+
+func (aw *AWSconfig) DeleteLambda(params LambdaParams) {
 
 }
 
