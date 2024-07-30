@@ -43,6 +43,10 @@ type LambdaOutputParams struct {
 	Tags         map[string]string `json:"tags"`
 }
 
+func GetLambdaConfig(cfg aws.Config) *lambda.Client {
+	return lambda.NewFromConfig(cfg)
+}
+
 func (aw *AWSconfig) CreateLambda(params LambdaParams) {
 
 }
