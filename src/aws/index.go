@@ -4,12 +4,16 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
+	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/spf13/viper"
 )
 
 type AWSconfig struct {
 	LambdaConfig lambda.Client
+	ECRConfig    ecr.Client
+	SSMConfig    ssm.Client
 }
 
 func New() (*AWSconfig, string, error) {
@@ -20,9 +24,13 @@ func New() (*AWSconfig, string, error) {
 		return &AWSconfig{}, profile, nil
 	}
 
-	lambdaConfig := lambda.NewFromConfig(cfg)
+	lambdaConfig := GetLambdaConfig(cfg)
+	ecrConfig := GetECRConfig(cfg)
+	ssmConfig := GetSSMConfig(cfg)
 
 	return &AWSconfig{
 		LambdaConfig: *lambdaConfig,
+		ECRConfig:    *ecrConfig,
+		SSMConfig:    *ssmConfig,
 	}, profile, nil
 }
