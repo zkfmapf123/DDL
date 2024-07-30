@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"errors"
 	"log"
 	"path/filepath"
 
@@ -12,6 +11,7 @@ import (
 )
 
 var (
+	DEFAULT_REGION  = "ap-northeast-2"
 	DEFAULT_PROFILE = "default"
 	CRED_PATH       = ".aws/credentials"
 )
@@ -65,9 +65,9 @@ func setAWSProfile() error {
 	}
 
 	// region
-	region := interactions.Prompt("Input Your Region : ")
+	region := interactions.Prompt("Input Your Region : (ap-northeast-2)")
 	if region == "" {
-		return errors.New("InValid Region")
+		region = DEFAULT_REGION
 	}
 
 	viper.Set("region", region)
