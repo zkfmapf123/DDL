@@ -9,6 +9,7 @@ import (
 
 const (
 	SSM_PATH = "/ddl/store/ecr"
+	ECR_NAME = "ddl-repo"
 )
 
 /*
@@ -18,7 +19,7 @@ func GetSSMConfig(cfg aws.Config) *ssm.Client {
 	return ssm.NewFromConfig(cfg)
 }
 
-func (aw *AWSconfig) RetrieveSSMValue() (string, error) {
+func (aw *AWSconfig) RetrieveSSMValue() (string, string, error) {
 
 	res, err := aw.SSMConfig.GetParameter(context.TODO(), &ssm.GetParameterInput{
 		Name: aws.String(SSM_PATH),
@@ -26,17 +27,17 @@ func (aw *AWSconfig) RetrieveSSMValue() (string, error) {
 
 	// NotFound
 	if err != nil {
-		return "", err
+		return "", ECR_NAME, err
 	}
 
-	return *res.Parameter.Name, nil
+	return *res.Parameter.Name, ECR_NAME, nil
 }
 
-func (aw *AWSconfig) SetSSMValuev(ecrName string) (string, error) {
+func (aw *AWSconfig) SetSSMValue() (string, error) {
 
 	_, err := aw.SSMConfig.PutParameter(context.TODO(), &ssm.PutParameterInput{
 		Name:  aws.String(SSM_PATH),
-		Value: &ecrName,
+		Value: aws.String(ECR_NAME),
 		Type:  "String",
 	})
 
@@ -44,5 +45,5 @@ func (aw *AWSconfig) SetSSMValuev(ecrName string) (string, error) {
 		return "", err
 	}
 
-	return ecrName, nil
+	return ECR_NAME, nil
 }

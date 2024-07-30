@@ -2,6 +2,7 @@ package aws
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
@@ -29,20 +30,21 @@ func (aw AWSconfig) RetrievECR(name string) (ECRParams, error) {
 	})
 
 	if err != nil {
-		return ECRParams{}, nil
+		return ECRParams{}, err
 	}
 
-	ecrName := new(ECRParams)
+	ecrName := ECRParams{}
 	for _, v := range res.Repositories {
 		ecrName.Name = *v.RepositoryName
 		ecrName.Uri = *v.RepositoryUri
 		ecrName.Arn = *v.RepositoryArn
 	}
 
-	return *ecrName, nil
+	return ecrName, nil
 }
 
 func (aw AWSconfig) CreateECR(name string) (ECRParams, error) {
+	fmt.Println(name)
 
 	res, err := aw.ECRConfig.CreateRepository(context.TODO(), &ecr.CreateRepositoryInput{
 		RepositoryName: aws.String(name),

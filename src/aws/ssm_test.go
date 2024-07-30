@@ -10,7 +10,7 @@ func Test_RetrieveSSMValue(t *testing.T) {
 
 	aws, _, _ := New()
 
-	v, _ := aws.RetrieveSSMValue()
+	v, _, _ := aws.RetrieveSSMValue()
 
 	assert.NotEqual(t, v, nil)
 }
