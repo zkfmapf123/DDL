@@ -1,6 +1,7 @@
 package aws
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/spf13/viper"
@@ -13,7 +14,7 @@ var lambdaInfo = LambdaParams{
 
 func beforeAll() *AWSconfig {
 
-	viper.Set("profile", "root")
+	viper.Set("profile", "default")
 	viper.Set("region", "ap-northeast-2")
 	cfg, _, _ := New()
 	return cfg
@@ -31,6 +32,8 @@ func Test_retrive(t *testing.T) {
 func Test_retrives(t *testing.T) {
 	cfg := beforeAll()
 	output, err := retriveLambdas(cfg.LambdaConfig)
+
+	fmt.Println(output)
 
 	if err != nil {
 		panic(err)

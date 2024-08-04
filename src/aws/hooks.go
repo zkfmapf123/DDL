@@ -17,12 +17,14 @@ func (aw *AWSconfig) MustBeforeHook() (ecrParams ECRParams) {
 	return ecrRepo
 }
 
-// SSM
-// ECR
-// NotExists -> Create
+/*
+Outputs : SSM Key (IF Not Exists)
+Outputs : ECR Key (IF Not Exists)
+*/
 func mustIspectNeedsToParameters(aw AWSconfig) (ecrParams ECRParams) {
 	ssmValue, ecrName, err := aw.RetrieveSSMValue()
 
+	// ssm
 	for {
 
 		if err == nil {
@@ -48,6 +50,7 @@ func mustIspectNeedsToParameters(aw AWSconfig) (ecrParams ECRParams) {
 		panic(err)
 	}
 
+	// ecr
 	ecrParam, _ := aw.RetrievECR(ecrName)
 
 	if ecrParam.Name == "" {
