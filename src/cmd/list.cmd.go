@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
+	"reflect"
 
 	"github.com/spf13/cobra"
 	"github.com/zkfmapf123/DDL/src/aws"
@@ -19,7 +21,23 @@ var listCmd = &cobra.Command{
 			panic(err)
 		}
 
-		fmt.Println(profile, ecrParams)
+		if profile == "" || ecrParams.Name == "" {
+			panic(errors.New("no Values"))
+		}
+
+		res, err := awsConfig.ListLambda()
+		if err != nil {
+			panic(err)
+		}
+
+		t := reflect.TypeOf(res[0])
+		for i := 0; i < t.NumField(); i++ {
+			fmt.Println(t.Field(i).Name)
+		}
+
+		for k, v := range res {
+			fmt.Println(k, v)
+		}
 	},
 }
 

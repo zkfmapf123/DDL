@@ -55,6 +55,15 @@ func (aw *AWSconfig) DeleteLambda(params LambdaParams) {
 
 }
 
+func (aw *AWSconfig) ListLambda() ([]LambdaOutputParams, error) {
+	list, err := retriveLambdas(aw.LambdaConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	return list, nil
+}
+
 func retriveLambda(l lambda.Client, parmas LambdaParams) (LambdaOutputParams, error) {
 	res, err := l.GetFunction(context.TODO(), &lambda.GetFunctionInput{
 		FunctionName: aws.String(parmas.Name),
