@@ -28,6 +28,23 @@ func PrintDashboardUseTypeArr[T any](arr []T) {
 
 }
 
+func PrintDashboardUseKey[T any](keys []string, dashbaord []T) {
+
+	t := tablewriter.NewWriter(os.Stdout)
+	t.SetHeader(keys)
+
+	for _, v := range dashbaord {
+		res := []string{}
+
+		for _, key := range keys {
+			res = append(res, GetKey(v, key))
+		}
+
+		t.Append(res)
+	}
+	t.Render()
+}
+
 /*
 * Key : Values[]
  */

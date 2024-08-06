@@ -2,11 +2,11 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 
 	"github.com/spf13/cobra"
 	"github.com/zkfmapf123/DDL/src/aws"
+	"github.com/zkfmapf123/DDL/src/utils"
 )
 
 var listCmd = &cobra.Command{
@@ -31,13 +31,12 @@ var listCmd = &cobra.Command{
 		}
 
 		t := reflect.TypeOf(res[0])
+		headers := []string{}
 		for i := 0; i < t.NumField(); i++ {
-			fmt.Println(t.Field(i).Name)
+			headers = append(headers, t.Field(i).Name)
 		}
 
-		for k, v := range res {
-			fmt.Println(k, v)
-		}
+		utils.PrintDashboardUseKey(headers, res)
 	},
 }
 

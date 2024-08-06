@@ -32,3 +32,18 @@ func Test_dashboardUseArr(t *testing.T) {
 
 	PrintDashboardUseTypeArr(lambdas)
 }
+
+func Test_PrintDashboardUseKey(t *testing.T) {
+
+	type Parmas struct {
+		Name string
+		Age  string
+	}
+
+	p := Parmas{
+		Name: "leedonggyu",
+		Age:  "30",
+	}
+
+	PrintDashboardUseKey(OKeys(p), []Parmas{p})
+}
