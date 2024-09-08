@@ -11,6 +11,8 @@ var (
 	ErrEmptyProfile = "profile is empty"
 	ErrEmptyRegion  = "region is empty"
 	ErrEmptyKey     = "access key or secret key is empty"
+
+	ErrSSMParameterNotFound = "ParameterNotFound"
 )
 
 var ErrorFamily = errors.New("start ErrorStackTrace")

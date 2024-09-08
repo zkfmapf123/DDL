@@ -20,6 +20,8 @@ type awsOpts struct {
 	region       string
 }
 
+var testConfig = NewAWSCredentials().WithProfile("leedonggyu").MustEnd()
+
 func NewAWSCredentials() *awsOpts {
 
 	return &awsOpts{
@@ -44,10 +46,10 @@ func (opt *awsOpts) WithProfile(profile string) *awsOpts {
 }
 
 type AWSClientParams struct {
-	SSMConfig    ssm.Client
-	LambdaConfig lambda.Client
-	ECRConfig    ecr.Client
-	IAMConfig    iam.Client
+	ssmConfig    ssm.Client
+	lambdaConfig lambda.Client
+	ecrConfig    ecr.Client
+	iamConfig    iam.Client
 }
 
 func (opt *awsOpts) MustEnd() AWSClientParams {
@@ -84,9 +86,9 @@ func (opt *awsOpts) MustEnd() AWSClientParams {
 	}
 
 	return AWSClientParams{
-		SSMConfig:    *ssm.NewFromConfig(client),
-		LambdaConfig: *lambda.NewFromConfig(client),
-		ECRConfig:    *ecr.NewFromConfig(client),
-		IAMConfig:    *iam.NewFromConfig(client),
+		ssmConfig:    *ssm.NewFromConfig(client),
+		lambdaConfig: *lambda.NewFromConfig(client),
+		ecrConfig:    *ecr.NewFromConfig(client),
+		iamConfig:    *iam.NewFromConfig(client),
 	}
 }

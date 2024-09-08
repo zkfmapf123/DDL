@@ -22,5 +22,5 @@ func Test_AWSConfig(t *testing.T) {
 
 	config := NewAWSCredentials().WithProfile("leedonggyu").MustEnd()
 
-	assert.NotEqual(t, config.SSMConfig, nil)
+	assert.NotEqual(t, config.ssmConfig, nil)
 }

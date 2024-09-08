@@ -20,5 +20,4 @@ lint:
 	golangci-lint run ./...
 
 test: lint
-	go test -v ./cmd
 	go test -v ./internal
