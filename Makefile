@@ -15,5 +15,10 @@ start: build
 	@make which
 	./ddl
 
-test:
-	go test -v ./...
+## Install golnagci-lint
+lint:
+	golangci-lint run ./...
+
+test: lint
+	go test -v ./cmd
+	go test -v ./internal
