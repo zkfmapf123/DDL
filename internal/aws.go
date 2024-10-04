@@ -20,8 +20,6 @@ type awsOpts struct {
 	region       string
 }
 
-var testConfig = NewAWSCredentials().WithProfile("leedonggyu").MustEnd()
-
 func NewAWSCredentials() *awsOpts {
 
 	return &awsOpts{

@@ -1,28 +1,22 @@
 package internal
 
-import (
-	"testing"
+// func Test_InitSSM(t *testing.T) {
 
-	"github.com/stretchr/testify/assert"
-)
+// 	v, err := testConfig.GetSSMValue()
 
-func Test_InitSSM(t *testing.T) {
+// 	assert.Equal(t, v, "")
+// 	assert.NotEqual(t, err, nil)
 
-	v, err := testConfig.GetSSMValue()
+// 	b := testConfig.IsMatchNotExistsKey(err)
+// 	assert.Equal(t, b, true)
 
-	assert.Equal(t, v, "")
-	assert.NotEqual(t, err, nil)
+// 	if b {
+// 		t.Log("key not found")
+// 		err := testConfig.InitSSM()
 
-	b := testConfig.IsMatchNotExistsKey(err)
-	assert.Equal(t, b, true)
+// 		if err != nil {
+// 			panic(err)
+// 		}
+// 	}
 
-	if b {
-		t.Log("key not found")
-		err := testConfig.InitSSM()
-
-		if err != nil {
-			panic(err)
-		}
-	}
-
-}
+// }

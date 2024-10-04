@@ -6,6 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// var testConfig = NewAWSCredentials().WithProfile("leedonggyu").MustEnd()
+
 func Test_DefaultAWS(t *testing.T) {
 
 	config := NewAWSCredentials().WithProfile("default").
