@@ -43,12 +43,20 @@ var (
 			// Refactoring
 			os.Setenv("profile", creds.Profile)
 			os.Setenv("region", creds.Region)
+
+			// set SSM / ECR
+			awsCreds := internal.NewAWSCredentials().
+				WithProfile(creds.Profile).
+				WithRegion(creds.Region).
+				MustEnd()
+
+			awsCreds.InitSSM()
 		},
 	}
 )
 
 func initConfig() {
-
+	// init
 }
 
 func init() {
