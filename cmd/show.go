@@ -15,33 +15,44 @@ var (
 			utils.NewTerminal().Clear()
 
 			table := utils.NewTableWriter()
+			creds, err := internal.GetAWSCredsProfile()
+			if err != nil {
+				utils.PanicError(err)
+			}
 
-			showCreds(*table)
-			showSSM(*table)
-			showLambda(*table)
+			awsCreds := internal.NewAWSCredentials().
+				WithProfile(creds.Profile).
+				WithRegion(creds.Region).
+				MustEnd()
+
+			showCreds(creds, *table)
+			showSSM(awsCreds, *table)
+			showLambda(awsCreds, *table)
 		},
 	}
 )
 
 // show aws credentials
-func showCreds(table utils.TwParams) {
-	creds, err := internal.GetAWSCredsProfile()
-	if err != nil {
-		utils.PanicError(err)
-	}
-
+func showCreds(creds internal.DDLCreds, table utils.TwParams) {
 	table.Setheader([]string{"profile", "region"})
 	table.SetBody([][]string{{creds.Profile, creds.Region}})
 	table.Print()
 }
 
 // show ssm key / value
-func showSSM(table utils.TwParams) {
+func showSSM(awsCreds internal.AWSClientParams, table utils.TwParams) {
+	key, value, err := awsCreds.GetSSMKeyValue()
+	if err != nil {
+		utils.PanicError(err)
+	}
 
+	table.Setheader([]string{"ssm-Key", "ssm-value"})
+	table.SetBody([][]string{{key, value}})
+	table.Print()
 }
 
 // show lamba use ddl
-func showLambda(table utils.TwParams) {
+func showLambda(awsCreds internal.AWSClientParams, table utils.TwParams) {
 
 }
 

@@ -41,10 +41,11 @@ func (p *AWSClientParams) InitSSM() (string, error) {
 	return SSMKEY, err
 }
 
-func (p *AWSClientParams) GetSSMValue() (string, string, error) {
+func (p *AWSClientParams) GetSSMKeyValue() (string, string, error) {
 
 	res, err := p.ssmConfig.GetParameter(context.TODO(), &ssm.GetParameterInput{
-		Name: aws.String(SSMKEY),
+		Name:           aws.String(SSMKEY),
+		WithDecryption: aws.Bool(true),
 	})
 
 	// Parameter Store에서 값을 가져오는데 실패한 경우
