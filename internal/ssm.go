@@ -41,7 +41,7 @@ func (p *AWSClientParams) InitSSM() (string, error) {
 	return SSMKEY, err
 }
 
-func (p *AWSClientParams) GetSSMValue() (string, error) {
+func (p *AWSClientParams) GetSSMValue() (string, string, error) {
 
 	res, err := p.ssmConfig.GetParameter(context.TODO(), &ssm.GetParameterInput{
 		Name: aws.String(SSMKEY),
@@ -49,10 +49,10 @@ func (p *AWSClientParams) GetSSMValue() (string, error) {
 
 	// Parameter Store에서 값을 가져오는데 실패한 경우
 	if err != nil {
-		return "", err
+		return SSMKEY, "", err
 	}
 
-	return *res.Parameter.Value, err
+	return SSMKEY, *res.Parameter.Value, err
 }
 
 // 람다 함수 생성할때
