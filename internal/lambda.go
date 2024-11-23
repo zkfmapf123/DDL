@@ -30,6 +30,11 @@ func (p *AWSClientParams) GetLambda() (LambdaParameter, error) {
 	fnList := make([]LambdaParameter, len(functionList.Functions))
 	for i, fn := range functionList.Functions {
 
+		for _, arch := fn.Architectures {
+			
+		}
+		arch := fn.Architectures
+
 		fnList[i] = LambdaParameter{
 			Architecture: ,
 		}
