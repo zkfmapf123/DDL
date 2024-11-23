@@ -13,7 +13,7 @@ var (
 		Run: func(cmd *cobra.Command, args []string) {
 			utils.NewTerminal().Clear()
 
-			table := utils.NewTableWriter()
+			// table := utils.NewTableWriter()
 		},
 	}
 )

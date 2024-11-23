@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"log"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/zkfmapf123/ddl/internal"
@@ -50,7 +52,14 @@ var (
 				WithRegion(creds.Region).
 				MustEnd()
 
-			awsCreds.InitSSM()
+			ssmKey, err := awsCreds.InitSSM()
+			if err != nil {
+				if !strings.Contains(err.Error(), "AlreadyExists") {
+					utils.PanicError(err)
+				}
+			}
+
+			log.Printf("Success SSM : %s", ssmKey)
 		},
 	}
 )

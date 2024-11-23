@@ -24,7 +24,7 @@ type SSMValueParams struct {
 	UpdatedAt    string                  `json:"updated_at"`
 }
 
-func (p *AWSClientParams) InitSSM() error {
+func (p *AWSClientParams) InitSSM() (string, error) {
 
 	ssmParams := SSMValueParams{}
 
@@ -35,10 +35,10 @@ func (p *AWSClientParams) InitSSM() error {
 	})
 
 	if err != nil {
-		return err
+		return SSMKEY, err
 	}
 
-	return err
+	return SSMKEY, err
 }
 
 func (p *AWSClientParams) GetSSMValue() (string, error) {
